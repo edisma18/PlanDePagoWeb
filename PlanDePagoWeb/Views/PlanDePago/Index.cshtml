@@ -1,0 +1,55 @@
+﻿@model PlanDePagoCredito.Models.PlanDePagoModel
+
+<div class="container">
+    <h2>Plan de Pago</h2>
+    <form method="post" action="/PlanDePago/CalcularPlanDePago">
+        <div class="form-group">
+            <label for="Capital">Capital:</label>
+            <input type="number" class="form-control" id="Capital" name="Capital" value="@Model.Capital" step="any" required />
+        </div>
+        <div class="form-group">
+            <label for="Tasa">Tasa de interés anual (%):</label>
+            <input type="number" class="form-control" id="Tasa" name="Tasa" value="@Model.Tasa" step="any" required />
+        </div>
+        <div class="form-group">
+            <label for="Meses">Número de meses:</label>
+            <input type="number" class="form-control" id="Meses" name="Meses" value="@Model.Meses" required />
+        </div>
+        <div class="form-group">
+            <label for="FechaDesembolso">Fecha de desembolso:</label>
+            <input type="date" class="form-control" id="FechaDesembolso" name="FechaDesembolso" value="@Model.FechaDesembolso.ToString("yyyy-MM-dd")" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Calcular Plan de Pago</button>
+        <a href="/PlanDePago/Reiniciar" class="btn btn-secondary">Limpiar</a>
+    </form>
+
+    @if (Model.Cuotas != null && Model.Cuotas.Count > 0)
+    {
+        <h3>Resultado</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Número de Cuota</th>
+                    <th>Fecha de Pago</th>
+                    <th>Pago Total</th>
+                    <th>Abono al Capital</th>
+                    <th>Interés</th>
+                    <th>Saldo Pendiente</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cuota in Model.Cuotas)
+                {
+                    <tr>
+                        <td>@cuota.Numero</td>
+                        <td>@cuota.FechaPago.ToShortDateString()</td>
+                        <td>@cuota.PagoTotal.ToString("C")</td>
+                        <td>@cuota.AbonoCapital.ToString("C")</td>
+                        <td>@cuota.Interes.ToString("C")</td>
+                        <td>@cuota.SaldoPendiente.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
